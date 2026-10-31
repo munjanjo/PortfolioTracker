@@ -2,4 +2,8 @@
   <Folder Name="/src/">
     <Project Path="src/PortfolioTracker.Api/PortfolioTracker.Api.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PortfolioTracker.IntegrationTests/PortfolioTracker.IntegrationTests.csproj" />
+    <Project Path="tests/PortfolioTracker.UnitTests/PortfolioTracker.UnitTests.csproj" />
+  </Folder>
 </Solution>
