@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-
+using PortfolioTracker.Api.Entities;
 namespace PortfolioTracker.Api.Data;
 
-class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-
+    public DbSet<Asset> Assets => Set<Asset>();
 }
