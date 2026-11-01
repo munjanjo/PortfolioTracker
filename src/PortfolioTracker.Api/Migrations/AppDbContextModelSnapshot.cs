@@ -83,6 +83,73 @@ namespace PortfolioTracker.Api.Migrations
 
                     b.ToTable("Portfolios");
                 });
+
+            modelBuilder.Entity("PortfolioTracker.Api.Entities.Transaction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ExecutedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Fee")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("numeric(18,4)");
+
+                    b.Property<int>("PortfolioId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("numeric(18,4)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 8)
+                        .HasColumnType("numeric(18,8)");
+
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.HasIndex("PortfolioId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("PortfolioTracker.Api.Entities.Transaction", b =>
+                {
+                    b.HasOne("PortfolioTracker.Api.Entities.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PortfolioTracker.Api.Entities.Portfolio", "Portfolio")
+                        .WithMany("Transactions")
+                        .HasForeignKey("PortfolioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("Portfolio");
+                });
+
+            modelBuilder.Entity("PortfolioTracker.Api.Entities.Portfolio", b =>
+                {
+                    b.Navigation("Transactions");
+                });
 #pragma warning restore 612, 618
         }
     }
