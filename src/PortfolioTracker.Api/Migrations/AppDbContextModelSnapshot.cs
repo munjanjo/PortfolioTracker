@@ -79,7 +79,13 @@ namespace PortfolioTracker.Api.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId", "Name")
+                        .IsUnique();
 
                     b.ToTable("Portfolios");
                 });
@@ -161,6 +167,17 @@ namespace PortfolioTracker.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PortfolioTracker.Api.Entities.Portfolio", b =>
+                {
+                    b.HasOne("PortfolioTracker.Api.Entities.User", "Owner")
+                        .WithMany("Portfolios")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+                });
+
             modelBuilder.Entity("PortfolioTracker.Api.Entities.Transaction", b =>
                 {
                     b.HasOne("PortfolioTracker.Api.Entities.Asset", "Asset")
@@ -183,6 +200,11 @@ namespace PortfolioTracker.Api.Migrations
             modelBuilder.Entity("PortfolioTracker.Api.Entities.Portfolio", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("PortfolioTracker.Api.Entities.User", b =>
+                {
+                    b.Navigation("Portfolios");
                 });
 #pragma warning restore 612, 618
         }
