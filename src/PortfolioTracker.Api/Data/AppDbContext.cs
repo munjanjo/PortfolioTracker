@@ -7,6 +7,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Asset> Assets => Set<Asset>();
     public DbSet<Portfolio> Portfolios => Set<Portfolio>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<User> Users => Set<User>();
     override protected void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
