@@ -167,6 +167,24 @@ namespace PortfolioTracker.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PortfolioTracker.Api.Entities.WatchlistItem", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId", "AssetId");
+
+                    b.HasIndex("AssetId");
+
+                    b.ToTable("WatchlistItems");
+                });
+
             modelBuilder.Entity("PortfolioTracker.Api.Entities.Portfolio", b =>
                 {
                     b.HasOne("PortfolioTracker.Api.Entities.User", "Owner")
@@ -197,6 +215,25 @@ namespace PortfolioTracker.Api.Migrations
                     b.Navigation("Portfolio");
                 });
 
+            modelBuilder.Entity("PortfolioTracker.Api.Entities.WatchlistItem", b =>
+                {
+                    b.HasOne("PortfolioTracker.Api.Entities.Asset", "Asset")
+                        .WithMany()
+                        .HasForeignKey("AssetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PortfolioTracker.Api.Entities.User", "User")
+                        .WithMany("WatchlistItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Asset");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PortfolioTracker.Api.Entities.Portfolio", b =>
                 {
                     b.Navigation("Transactions");
@@ -205,6 +242,8 @@ namespace PortfolioTracker.Api.Migrations
             modelBuilder.Entity("PortfolioTracker.Api.Entities.User", b =>
                 {
                     b.Navigation("Portfolios");
+
+                    b.Navigation("WatchlistItems");
                 });
 #pragma warning restore 612, 618
         }
